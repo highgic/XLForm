@@ -177,6 +177,7 @@ NSString * const XLFormErrorDomain = @"XLFormErrorDomain";
     return nil;
 }
 
+
 -(NSDictionary *)formValues
 {
     NSMutableDictionary * result = [NSMutableDictionary dictionary];
@@ -185,7 +186,7 @@ NSString * const XLFormErrorDomain = @"XLFormErrorDomain";
         {
             for (XLFormRowDescriptor * row in section.formRows) {
                 if (row.tag && ![row.tag isEqualToString:@""]){
-                    [result setObject:(row.value ?: [NSNull null]) forKey:row.tag];
+                    [result setObject:([row.value valueData] ?: [NSNull null]) forKey:row.tag];
                 }
             }
         }
@@ -193,7 +194,7 @@ NSString * const XLFormErrorDomain = @"XLFormErrorDomain";
             NSMutableArray * multiValuedValuesArray = [NSMutableArray new];
             for (XLFormRowDescriptor * row in section.formRows) {
                 if (row.value){
-                    [multiValuedValuesArray addObject:row.value];
+                    [multiValuedValuesArray addObject:[row.value valueData]];
                 }
             }
             [result setObject:multiValuedValuesArray forKey:section.multiValuedTag];
@@ -202,6 +203,7 @@ NSString * const XLFormErrorDomain = @"XLFormErrorDomain";
     return result;
     
 }
+
 
 -(NSDictionary *)httpParameters:(XLFormViewController *)formViewController
 {
